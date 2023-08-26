@@ -6,10 +6,8 @@ import br.com.alura.screenmatch.model.DadosTemporada;
 import br.com.alura.screenmatch.service.ConsumoAPI;
 import br.com.alura.screenmatch.service.ConverteDados;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Principal {
 
@@ -55,5 +53,17 @@ public class Principal {
 //                .filter(n -> n.startsWith("B")) //filtrando de acordo com o critério passado
 //                .map(n -> n.toUpperCase()) //aplicando uma transformação
 //                .forEach(System.out::println);
+
+        //criando uma lista única com todos os episodios
+        List<DadosEpisodio> dadosEpisodios = temporadas.stream()
+                .flatMap(t -> t.episodios().stream()) //dentro da minha lista vou ter outra lista e vou puxar todas juntas
+                .collect(Collectors.toList()); //toList() retorna uma lista estática, onde não podemos empilhar novas operações
+
+        //imprimindo os TOP 5 episódios
+        dadosEpisodios.stream()
+                .filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
+                .sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
+                .limit(5)
+                .forEach(System.out::println);
     }
 }
