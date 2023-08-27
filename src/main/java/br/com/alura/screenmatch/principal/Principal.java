@@ -64,13 +64,13 @@ public class Principal {
         //imprimindo os TOP 5 episódios
         dadosEpisodios.stream()
                 .filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
-                .peek(e -> System.out.println("Primeiro filtro (N/A) " + e))
+//                .peek(e -> System.out.println("Primeiro filtro (N/A) " + e))
                 .sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
-                .peek(e -> System.out.println("Segundo filtro (ordenacao por avaliacao) " + e))
+//                .peek(e -> System.out.println("Segundo filtro (ordenacao por avaliacao) " + e))
                 .limit(5)
-                .peek(e -> System.out.println("Terceiro filtro (limit) " + e))
+//                .peek(e -> System.out.println("Terceiro filtro (limit) " + e))
                 .map(e -> e.titulo().toUpperCase())
-                .peek(e -> System.out.println("Quarto filtro (mapeamento) " + e))
+//                .peek(e -> System.out.println("Quarto filtro (mapeamento) " + e))
                 .forEach(System.out::println);
 
         //iterando a lista flat para construir novos episodios (com numero da temporada)
@@ -79,6 +79,20 @@ public class Principal {
                         .map(de -> new Episodio(t.numero(), de))
                 ).collect(Collectors.toList());
         episodios.forEach(System.out::println);
+
+        //realizar de busca de exemplo
+        System.out.println("Informe o título do episódio que deseja buscar");
+        var trechoTitulo = leitura.nextLine();
+        Optional<Episodio> episodioBuscado = episodios.stream()
+                .filter(e -> e.getTitulo().toUpperCase().contains(trechoTitulo.toUpperCase()))
+                .findFirst();
+        if (episodioBuscado.isPresent()) {
+            System.out.println("Episódio encontrado!");
+            System.out.println("Temporada: " + episodioBuscado.get().getTemporada());
+        } else {
+            System.out.println("Episódio não encontrado");
+        }
+
 
         //obtendo os episódios a partir de um ano selecionado pelo usuário
         System.out.println("A partir de que ano  você deseja ver os episódios");
