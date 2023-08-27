@@ -64,8 +64,13 @@ public class Principal {
         //imprimindo os TOP 5 episódios
         dadosEpisodios.stream()
                 .filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
+                .peek(e -> System.out.println("Primeiro filtro (N/A) " + e))
                 .sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
+                .peek(e -> System.out.println("Segundo filtro (ordenacao por avaliacao) " + e))
                 .limit(5)
+                .peek(e -> System.out.println("Terceiro filtro (limit) " + e))
+                .map(e -> e.titulo().toUpperCase())
+                .peek(e -> System.out.println("Quarto filtro (mapeamento) " + e))
                 .forEach(System.out::println);
 
         //iterando a lista flat para construir novos episodios (com numero da temporada)
